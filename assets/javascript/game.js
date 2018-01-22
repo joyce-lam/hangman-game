@@ -4,39 +4,61 @@ var wordList = ["afghanistan", "albania", "algeria", "andorra", "angola", "argen
 
 
 
-
+//set variables
 var wins = 0;
 var losses = 0;
 var remainedGuesses = 15; 
 var lettersGuessed = [];
 var guessWord;
-var letterInGuess;
-var underScore;
+var underScore = "_ ";
+var wordLength;
 
+
+// declare a function to find a word within the array
 function randomWord () { 
+	console.log(guessWord);
+	console.log(guessWord.length);
 	guessWord = wordList[Math.floor(Math.random()*wordList.length)];
+	wordLength = guessWord.length;
+}
+
+//declare a function to display the word as underscores
+function showUnderscore () {
+	var underscores = '';
+	for (var i = 0; i<wordLength; i++) {
+		underscores += underScore;
+	}
+	console.log(underscores);
+	document.getElementById("underscore").innerHTML = underscores;
 }
 
 
+// function showLetter() {
+
+// }
 
 
+// declare a function to compare user guess to the guess word
 function compareAnswer () {
 	if (userGuess === letterInGuess) {
-		wins ++;
-		resetGame();
+			;
+		// resetGame();
 	} else if (remainedGuesses===0) {
 		losses++;
 		resetGame();
 	}
 } 
 
+//declare a function to reset the game 
 function resetGame () {
-	remainedGuesses;
+	remainedGuesses =15;
 	lettersGuessed= [];
-	guessWord = randomWord();
+	randomWord();
+	showUnderscore();
 }
 
 
+//declare a function for updating scores
 function updateScore () {
 	document.getElementById("wins").innerHTML = wins;
 	document.getElementById("losses").innerHTML = losses;
@@ -50,8 +72,8 @@ function updateScore () {
 window.onload = function () {
 	resetGame();
 	updateScore();
-	showUnderscore();
 }
+	
 
 window.onkeydown = function(event) {
 	var userGuess = event.key;
@@ -59,13 +81,13 @@ window.onkeydown = function(event) {
 	remainedGuesses--;
 	lettersGuessed.push(userGuess);
 
-	for (var j = 0; j <guessWord.length; j++) {
-	letterInGuess = guessWord[j];
-	compareAnswer();
+
+	for (var j = 0; j <wordLength; j++) {
+		var letterInGuess = guessWord[j];
+		compareAnswer();
 	}
 
-	updateScore();
-
+		updateScore();
 }
 
 
