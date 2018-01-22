@@ -11,65 +11,66 @@ var remainedGuesses = 15;
 var lettersGuessed = [];
 var guessWord;
 var underScore = "_ ";
-var wordLength;
+var lettersRevealed = [];
+
+
 
 
 // declare a function to find a word within the array
 function randomWord () { 
+	guessWord = wordList[Math.floor(Math.random()*wordList.length)];
+	var lettersArray = [guessWord.split("")];
 	console.log(guessWord);
 	console.log(guessWord.length);
-	guessWord = wordList[Math.floor(Math.random()*wordList.length)];
-	wordLength = guessWord.length;
+	console.log(lettersArray);
 }
 
 //declare a function to display the word as underscores
-function showUnderscore () {
-	var underscores = '';
-	for (var i = 0; i<wordLength; i++) {
-		underscores += underScore;
+function genUnderscores() {
+	for (var i = 0; i<guessWord.length; i++) {
+		lettersRevealed.push(underScore);
+		console.log(lettersRevealed);
 	}
-	console.log(underscores);
-	document.getElementById("underscore").innerHTML = underscores;
 }
 
 
-// function showLetter() {
-
-// }
-
-
-// declare a function to compare user guess to the guess word
-function compareAnswer () {
-	if (userGuess === letterInGuess) {
-			;
-		// resetGame();
-	} else if (remainedGuesses===0) {
-		losses++;
-		resetGame();
-	}
-} 
 
 //declare a function to reset the game 
-function resetGame () {
-	remainedGuesses =15;
-	lettersGuessed= [];
+function resetGame() {
+	remainedGuesses = 15;
+	lettersGuessed = [];
 	randomWord();
-	showUnderscore();
+	genUnderscores();
+	updateScore();
 }
 
+// declare a function which generates a string from an array by concatenation of the characters separated by spaces
+function genLettersString(arr) {
+	var string = '';
+	for (var i = 0; i < arr.length; i++) {
+		string += arr[i] + ' ';
+	}
+	console.log(string.length);
+	return string
+}
 
 //declare a function for updating scores
-function updateScore () {
+function updateScore() {
 	document.getElementById("wins").innerHTML = wins;
 	document.getElementById("losses").innerHTML = losses;
 	document.getElementById("numberguesses").innerHTML = remainedGuesses;
 	document.getElementById("letters").innerHTML = lettersGuessed;
+
+	string = genLettersString(lettersRevealed);
+	console.log(string);
+
+	document.getElementById("underscore").innerHTML = string;
 }
 
 
 
 
-window.onload = function () {
+window.onload = function() {
 	resetGame();
 	updateScore();
 }
@@ -82,14 +83,23 @@ window.onkeydown = function(event) {
 	lettersGuessed.push(userGuess);
 
 
-	for (var j = 0; j <wordLength; j++) {
-		var letterInGuess = guessWord[j];
-		compareAnswer();
+	
+
+
+	for (var k = 0; k <guessWord.length; k++) {
+		var letterInGuess = guessWord[k];
+		if (userGuess=== letterInGuess) {
+			lettersRevealed[k] = letterInGuess;
+		}
 	}
 
-		updateScore();
+
+	if (remainedGuesses===0) {
+			losses++;
+			resetGame(); 
+	}
+
+	updateScore();
 }
-
-
 
 
